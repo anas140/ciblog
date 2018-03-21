@@ -5,6 +5,7 @@
 	<title>CI BLOG</title>
 	<link rel="stylesheet" href="https://bootswatch.com/4/flatly/bootstrap.min.css">
 	<link rel="stylesheet" href="<?= base_url('assets/css/style.css'); ?>">
+	<script src="//cdn.ckeditor.com/4.9.0/standard/ckeditor.js"></script>
 </head>
 <body>
 	<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
@@ -24,6 +25,11 @@
 	      <li class="nav-item">
 	        <a class="nav-link" href="/posts">Posts</a>
 	      </li>
+	    </ul>
+	    <ul class="navbar-nav my-2 my-lg-0">
+	    	<li>
+	    		<a href="/posts/create" class="nav-link">Create Post</a>
+	    	</li>
 	    </ul>
 	  </div>
 	</nav>
