@@ -25,10 +25,16 @@
 	      <li class="nav-item">
 	        <a class="nav-link" href="/posts">Posts</a>
 	      </li>
+	      <li class="nav-item">
+	        <a class="nav-link" href="/categories">categories</a>
+	      </li>
 	    </ul>
 	    <ul class="navbar-nav my-2 my-lg-0">
 	    	<li>
 	    		<a href="/posts/create" class="nav-link">Create Post</a>
+	    	</li>
+	    	<li>
+	    		<a href="/categories/create" class="nav-link">Create Categories</a>
 	    	</li>
 	    </ul>
 	  </div>

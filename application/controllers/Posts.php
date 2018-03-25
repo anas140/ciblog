@@ -22,7 +22,9 @@
 		 */
 		public function view($slug = Null) {
 			$data['post'] = $this->post_model->get_posts($slug);
-
+			$post_id = $data['post']['id'];
+			$data['comments'] = $this->comment_model->get_comments($post_id);
+			// print_r($data); exit;
 			if(empty($data['post'])) {
 				show_404();
 			}
@@ -41,7 +43,8 @@
 		 */
 		public function create() {
 			$data['title'] = 'Create Post';
-			
+			$data['categories'] = $this->post_model->getCategories();
+
 			$this->form_validation->set_rules('title', 'Title', 'required');
 			$this->form_validation->set_rules('body', 'Body', 'required');
 
@@ -50,8 +53,26 @@
 				$this->load->view('posts/create', $data);
 				$this->load->view('templates/footer');
 			} else {
-				$this->post_model->create_post();
+				// upload image
+				$config['upload_path'] = './assets/images/posts';
+				$config['allowed_types'] = 'gif|png|jpg';
+				$config['max_size'] = '2048';
+				$config['max_width'] = '500';
+				$config['max_height'] = '500';
+
+				$this->load->library('upload', $config);
+
+				if(!$this->upload->do_upload()) {
+					// $errors = array('error' => $this->upload->display_errors());
+					$image = 'no_image.jpg';
+					// print_r($errors);
+				} else {
+					$data = array('upload_data' => $this->upload->data());
+					$image = $_FILES['userfile']['name'];
+				}
+				$this->post_model->create_post($image);
 				redirect('posts');
+				
 			}
 		}
 
@@ -62,6 +83,7 @@
 
 		public function edit($slug) {
 			$data['post'] = $this->post_model->get_posts($slug);
+			$data['categories'] = $this->post_model->getCategories();
 
 			if(empty($data['post'])) {
 				show_404();
@@ -75,7 +97,13 @@
 		}
 
 		public function update() {
+
+			$this->form_validation->set_rules('title', 'Title', 'required');
+			$this->form_validation->set_rules('body', 'Body', 'required');
+
 			$this->post_model->update_post();
 			redirect('posts');
 		}
+
+		
 	}
