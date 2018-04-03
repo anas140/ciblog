@@ -4,11 +4,14 @@
 	<?= $post['body'] ?>
 </div>
 
-<hr>
+
+<?php if($this->session->userdata('user_id') == $post['user_id']): ?>
+  <hr> 
 <a href="/posts/edit/<?= $post['slug'] ?>" class="btn btn-warning float-left mr-2"> Edit </a>
 <?= form_open('/posts/delete/'.$post['id']); ?>
 	<input type="submit" value="Delete" class="btn btn-danger">
 </form>
+<?php endif; ?>
 <hr>
    <?php if($comments): ?>
       <h3>Comments</h3>

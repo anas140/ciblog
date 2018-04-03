@@ -42,6 +42,11 @@
 		 * @return Post Forum
 		 */
 		public function create() {
+			# check if a user logged in
+			if(!$this->session->userdata('logged_in')) {
+				redirect('users/login');
+			}
+
 			$data['title'] = 'Create Post';
 			$data['categories'] = $this->post_model->getCategories();
 
@@ -57,32 +62,51 @@
 				$config['upload_path'] = './assets/images/posts';
 				$config['allowed_types'] = 'gif|png|jpg';
 				$config['max_size'] = '2048';
-				$config['max_width'] = '500';
-				$config['max_height'] = '500';
+				$config['max_width'] = '0';
+				$config['max_height'] = '0';
 
 				$this->load->library('upload', $config);
 
 				if(!$this->upload->do_upload()) {
-					// $errors = array('error' => $this->upload->display_errors());
+					$errors = array('error' => $this->upload->display_errors());
 					$image = 'no_image.jpg';
-					// print_r($errors);
+					// print_r($errors); exit;
 				} else {
 					$data = array('upload_data' => $this->upload->data());
 					$image = $_FILES['userfile']['name'];
+					// echo $image; exit;
 				}
 				$this->post_model->create_post($image);
+				$this->session->set_flashdata('post_created', 'Your post has been created');
 				redirect('posts');
 				
 			}
 		}
 
 		public function delete($id) {
+			# check if a user logged in
+			if(!$this->session->userdata('logged_in')) {
+				redirect('users/login');
+			}
+
 			$this->post_model->delete_post($id);
+			$this->session->set_flashdata('post_deleted', 'Your post has been deleted');
 			redirect('posts');
 		}
 
 		public function edit($slug) {
+			# check if a user logged in
+			if(!$this->session->userdata('logged_in')) {
+				redirect('users/login');
+			}
+
 			$data['post'] = $this->post_model->get_posts($slug);
+
+			# check user
+			if($this->session->userdata('user_id') != $data['post']['user_id']) {
+				redirect('posts');
+			}
+
 			$data['categories'] = $this->post_model->getCategories();
 
 			if(empty($data['post'])) {
@@ -97,13 +121,16 @@
 		}
 
 		public function update() {
+			# check if a user logged in
+			if(!$this->session->userdata('logged_in')) {
+				redirect('users/login');
+			}
 
 			$this->form_validation->set_rules('title', 'Title', 'required');
 			$this->form_validation->set_rules('body', 'Body', 'required');
 
 			$this->post_model->update_post();
+			$this->session->set_flashdata('post_updated', 'Your post has been updated');
 			redirect('posts');
 		}
-
-		
 	}

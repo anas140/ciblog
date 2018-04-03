@@ -30,15 +30,94 @@
 	      </li>
 	    </ul>
 	    <ul class="navbar-nav my-2 my-lg-0">
-	    	<li>
-	    		<a href="/posts/create" class="nav-link">Create Post</a>
-	    	</li>
-	    	<li>
-	    		<a href="/categories/create" class="nav-link">Create Categories</a>
-	    	</li>
+	    	<?php if(!$this->session->userdata('logged_in')): ?>
+		    	<li>
+		    		<a href="/users/login" class="nav-link">Login</a>
+		    	</li>
+		    	<li>
+		    		<a href="/users/register" class="nav-link">Register</a>
+		    	</li>
+	    	<?php endif; ?>
+
+	    	<?php if($this->session->userdata('logged_in')): ?>
+		    	<li>
+		    		<a href="/posts/create" class="nav-link">Create Post</a>
+		    	</li>
+		    	<li>
+		    		<a href="/categories/create" class="nav-link">Create Categories</a>
+		    	</li>
+		    	<li>
+		    		<a href="/users/logout" class="nav-link">Logout</a>
+		    	</li>
+	    <?php endif; ?>
 	    </ul>
 	  </div>
 	</nav>
 
 	<div class="container">
-	
+		<div class="row">
+		<div class="col-md-4 offset-4">
+				<?php if($this->session->flashdata('user_registered')): ?>
+					<div class="alert alert-dismissible alert-success mt-5">
+					  <button type="button" class="close" data-dismiss="alert">&times;</button>
+					  <strong>Well done!</strong> 
+					  <?= $this->session->flashdata('user_registered') ?> 
+					  <a href="users/login" class="alert-link">Login</a>.
+					</div>
+					<?php endif; ?>
+
+					<?php if($this->session->flashdata('post_created')): ?>
+						<div class="alert alert-dismissible alert-success mt-5">
+						  <button type="button" class="close" data-dismiss="alert">&times;</button>
+						  <strong>Well done!</strong> <?= $this->session->flashdata('post_created') ?>
+						</div>
+					<?php endif; ?>
+
+					<?php if($this->session->flashdata('post_updated')): ?>
+						<div class="alert alert-dismissible alert-success mt-5">
+						  <button type="button" class="close" data-dismiss="alert">&times;</button>
+						  <strong>Well done!</strong> 
+						  <?= $this->session->flashdata('post_updated') ?> 
+						</div>
+					<?php endif; ?>
+
+					<?php if($this->session->flashdata('categogry_created')): ?>
+						<div class="alert alert-dismissible alert-success mt-5">
+						  <button type="button" class="close" data-dismiss="alert">&times;</button>
+						  <strong>Well done!</strong> 
+						  <?= $this->session->flashdata('categogry_created') ?>
+						</div>
+					<?php endif; ?>
+
+					<?php if($this->session->flashdata('post_deleted')): ?>
+						<div class="alert alert-dismissible alert-warning mt-5">
+						  <button type="button" class="close" data-dismiss="alert">&times;</button>
+						  <strong>Well done!</strong> 
+						  <?= $this->session->flashdata('post_deleted') ?>
+						</div>
+					<?php endif; ?>
+
+					<?php if($this->session->flashdata('login_failed')): ?>
+						<div class="alert alert-dismissible alert-danger mt-5">
+						  <button type="button" class="close" data-dismiss="alert">&times;</button>
+						  <strong>Failed!</strong> 
+						  <?= $this->session->flashdata('login_failed') ?>
+						</div>
+					<?php endif; ?>		
+
+					<?php if($this->session->flashdata('user_loggedin')): ?>
+						<div class="alert alert-dismissible alert-success mt-5">
+						  <button type="button" class="close" data-dismiss="alert">&times;</button>
+						  <strong>Success</strong> 
+						  <?= $this->session->flashdata('user_loggedin') ?>
+						</div>
+					<?php endif; ?>		
+
+					<?php if($this->session->flashdata('logged_out')): ?>
+						<div class="alert alert-dismissible alert-warning mt-5">
+						  <button type="button" class="close" data-dismiss="alert">&times;</button>
+						  <?= $this->session->flashdata('logged_out') ?>
+						</div>
+					<?php endif; ?>		
+			</div>
+</div>
